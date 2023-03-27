@@ -1,0 +1,15 @@
+{% for field in form %}
+    <div class="form-group">
+        {% if field.field.widget.is_hidden is not True %}
+            {% if field.field.required %}
+                <label>{{ field.label }}<span class="required"> * </span></label>
+            {% else %}
+                <label>{{ field.label }}</label>
+            {% endif %}
+        {% endif %}
+        {{ field }}
+        <div>
+            <small class="help-block text-muted">{{ field.help_text }}</small>
+        </div>
+    </div>
+{% endfor %}

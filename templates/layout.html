@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{{ PROJECT_TITLE }}!{% endblock %}
+    </title>
+    {% include "includes/css.html" %}
+</head>
+<body>
+<div id="wrapper">
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+{% include 'includes/js.html' %}
+</body>
+</html>
