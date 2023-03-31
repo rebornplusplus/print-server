@@ -29,7 +29,11 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="{% url 'status' %}">My Submissions</a></li>
+                        {% if user.is_staff %}
+                            <li><a href="/admin">Admin Site</a></li>
+                            <li role="separator" class="divider"></li>
+                        {% endif %}
+                        <li><a href="#">My Submissions</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{% url 'logout' %}">Log out</a></li>
                     </ul>
