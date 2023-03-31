@@ -2,7 +2,11 @@
 **/__pycache__
 **/*.sqlite3
 
+**/migrations
+**/.static
+
 **/.idea
+**/.vscode
 **/*.swo
 **/*.swp
 
