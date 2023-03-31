@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block content %}
+    <div>
+        <div class="text-center p20">
+            <h1>
+                <i class="fa fa-print"> </i>
+                {{ PROJECT_TITLE }}
+            </h1>
+        </div>
+        {% if errors %}
+            <div class="alert alert-danger margin-center" style="width: 400px;">{{ errors }}</div>
+        {% endif %}
+        <div class="card shadow panel p30 margin-center" style="width: 400px;">
+            <form method="post">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        {% if field.field.widget.is_hidden is not True %}
+                            {% if field.field.required %}
+                                <label for="{{ field.name }}">{{ field.label }}<span class="required"> * </span></label>
+                            {% else %}
+                                <label for="{{ field.name }}">{{ field.label }}</label>
+                            {% endif %}
+                        {% endif %}
+                        {{ field }}
+                        <div>
+                            <small class="help-block text-muted">{{ field.help_text }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="clearfix">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="pull-left">
+                        <a href="#" title="Ask a volunteer!" onclick='alert("Ask a volunteer!")'>Forgot password?</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("id_username").classList.add("form-control");
+        document.getElementById("id_password").classList.add("form-control");
+    </script>
+{% endblock %}
