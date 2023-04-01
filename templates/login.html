@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load static %}
+{% load form_tags %}
 
 {% block content %}
     <div>
@@ -13,31 +14,11 @@
             <div class="alert alert-danger margin-center" style="width: 400px;">{{ errors }}</div>
         {% endif %}
         <div class="card shadow panel p30 margin-center" style="width: 400px;">
-            <form method="post">
+            <form id="id_login_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                {% if form.errors %}
-                    <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        {{ form.errors }}
-                    </div>
-                {% endif %}
-
-                {% for field in form %}
-                    <div class="form-group">
-                        {% if field.field.widget.is_hidden is not True %}
-                            {% if field.field.required %}
-                                <label for="{{ field.name }}">{{ field.label }}<span class="required"> * </span></label>
-                            {% else %}
-                                <label for="{{ field.name }}">{{ field.label }}</label>
-                            {% endif %}
-                        {% endif %}
-                        {{ field }}
-                        <div>
-                            <small class="help-block text-muted">{{ field.help_text }}</small>
-                        </div>
-                    </div>
-                {% endfor %}
+                {% form_error form %}
+                {% basic_form_headless form %}
 
                 <div class="clearfix">
                     <div class="pull-right">

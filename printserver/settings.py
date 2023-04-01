@@ -68,6 +68,12 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "printserver.context_processor.project_constants",
             ],
+            # 'libraries': A dictionary of labels and dotted Python paths of template tag modules to register with the
+            # template engine. This can be used to add new libraries or provide alternate labels for existing ones.
+            # https://docs.djangoproject.com/en/4.1/topics/templates/#django.template.backends.django.DjangoTemplates
+            "libraries": {
+                "form_tags": "templates.tags.form_tags",
+            },
         },
     },
 ]
