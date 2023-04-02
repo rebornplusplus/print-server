@@ -1,0 +1,52 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% load admin_urls %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        <form{% if form_url %} action="{{ form_url }}"{% endif %} method="post" id="{{ opts.model_name }}_form">
+            {% csrf_token %}
+
+            <div>
+                {% if form.errors %}
+                    <p class="errornote">
+                        {% if form.errors.items|length == 1 %}
+                            {% translate "Please correct the error below." %}
+                        {% else %}
+                            {% translate "Please correct the errors below." %}
+                        {% endif %}
+                    </p>
+                {% endif %}
+
+                <p>
+                    {% blocktranslate %}
+                        Add multiple users at once. <br/>
+                        Provide their <i>unique</i> <strong>usernames</strong>,
+                        <i>strong</i> <strong>passwords</strong> and <strong>names</strong> in a CSV format.
+                    {% endblocktranslate %}
+                </p>
+
+                <fieldset class="module aligned">
+                    <div class="form-row">
+                        {{ form.users_details.errors }}
+                        {{ form.users_details.label_tag }} {{ form.users_details }}
+                        {% if form.users_details.help_text %}
+                            <div class="help"{% if form.users_details.id_for_label %} id="{{ form.users_details.id_for_label }}_helptext">{% endif %}
+                            {{ form.users_details.help_text|safe }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </fieldset>
+
+                <div class="submit-row">
+                    <input type="submit" value="{% translate 'Add users' %}" class="default">
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

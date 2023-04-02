@@ -1,0 +1,15 @@
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {% if has_add_permission %}
+        <li>
+            {% url cl.opts|admin_urlname:'add' as add_url %}
+            <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink">
+                {% blocktranslate with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktranslate %}
+            </a>
+            <a href="{% url "admin:accounts_siteuser_add_users" %}" class="addlink" style="margin-left: 5px;">
+                {% blocktranslate with cl.opts.verbose_name as name %}Add {{ name }}s in Bulk{% endblocktranslate %}
+            </a>
+        </li>
+    {% endif %}
+{% endblock %}
