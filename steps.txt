@@ -1,9 +1,0 @@
-sudo apt install python-is-python3
-sudo apt install python3-pip
-python -m pip install Django==4.0.5 fpdf==1.7.2
-python manage.py makemigrations users prints
-python manage.py migrate
-python manage.py shell < add_user_script.py
-
-# check default printer
-python manage.py runserver ip:port
