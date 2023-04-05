@@ -10,17 +10,31 @@ install:
 
 	@echo "\n" \
 		"--------------------------------------------------------------- \n" \
+		"* install required packages in virtual env:  make install       \n" \
+		"* make and apply migrations:                 make migrate       \n" \
+		"* collect static files:                      make collectstatic \n" \
 		"* watch, build and serve the django server:  make run           \n" \
+		"* run the tests:                             make test          \n" \
 		"* clean full environment:                    make clean         \n" \
 		"--------------------------------------------------------------- \n"
+
+migrate:
+	. $(VENV); python3 manage.py makemigrations accounts
+	. $(VENV); python3 manage.py migrate
+
+collectstatic:
+	. $(VENV); python3 manage.py collectstatic
 
 run:
 	. $(VENV); python3 manage.py runserver
 
-clean:
-	rm -rf .venv
+test:
+	. $(VENV); python3 manage.py test --verbosity 2
 
-all: install run clean
+clean:
+	rm -rf .venv .static *.sqlite*
+
+all: install migrate collectstatic run test clean
 
 .PHONY: all
 
