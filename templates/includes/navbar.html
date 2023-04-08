@@ -32,7 +32,7 @@
                             <li><a href="/admin">Admin Site</a></li>
                             <li role="separator" class="divider"></li>
                         {% endif %}
-                        <li><a href="#">My Submissions</a></li>
+                        <li><a href="{% url 'prints.submissions' %}">My Submissions</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{% url 'logout' %}">Log out</a></li>
                     </ul>

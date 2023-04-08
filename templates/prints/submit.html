@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_tags %}
+
+{% block content %}
+    <div class="row p20">
+        <form action="{% url 'prints.submit' %}" method="POST">
+            {% csrf_token %}
+            {% form_error form %}
+            {% basic_form_headless form %}
+            <button class="btn btn-primary center-block" type="submit">
+                Send to Print
+            </button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block page_script %}
+    <script type="text/javascript">
+        function pasteContent() {
+            let fileField = document.getElementById("id_file");
+            let textField = document.getElementById("id_source_code");
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                textField.value = e.target.result;
+            }
+            reader.readAsText(fileField.files[0]);
+        }
+    </script>
+{% endblock %}

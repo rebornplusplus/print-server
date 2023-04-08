@@ -19,7 +19,7 @@ install:
 		"--------------------------------------------------------------- \n"
 
 migrate:
-	. $(VENV); python3 manage.py makemigrations accounts
+	. $(VENV); python3 manage.py makemigrations accounts prints
 	. $(VENV); python3 manage.py migrate
 
 collectstatic:
