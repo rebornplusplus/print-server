@@ -1,8 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 
+from accounts.models import SiteUser
+from printserver.helpers import generate_html_for_print, generate_weasyprint_doc
 from .forms import PrintSubmitForm
+from .models import Print
 
 
 @login_required
@@ -10,15 +16,31 @@ def submit_view(request):
     if request.method == "POST":
         form = PrintSubmitForm(request.POST)
         if form.is_valid():
+            user = SiteUser.objects.get(id=request.user.id)
             submission = form.save(commit=False)
-            submission.user = request.user
-            submission.pages = 1    # TODO: PLACEHOLDER. Update accordingly.
-            submission.save()
-            messages.success(
-                request,
-                "Submitted successfully. <a href=" + reverse("prints.submissions") + ">See all submissions</a>."
+            submission.user = user
+            pdf = generate_weasyprint_doc(
+                content=submission.content,
+                template_path="prints/print-details.html",
+                css_path="css/magic.css",
+                top_left_header=request.user.first_name
             )
-            return redirect(reverse("home"))
+            submission.pages = len(pdf.pages)
+            if user.can_print(submission.pages):
+                with transaction.atomic():
+                    user.update_pages(submission.pages)
+                    submission.save()
+                    user.save()
+                messages.success(
+                    request,
+                    "Submitted successfully. Took " + str(submission.pages) + " pages."
+                )
+                return redirect(reverse("home"))
+            else:
+                messages.error(
+                    request,
+                    "Cannot print the submitted document. You don't have enough pages remaining."
+                )
     else:
         form = PrintSubmitForm()
 

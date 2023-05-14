@@ -11,6 +11,17 @@ from .models import SiteUser
 
 @admin.register(SiteUser)
 class SiteUserAdmin(UserAdmin):
+    fieldsets = (
+        *UserAdmin.fieldsets,
+        (
+            "Print Settings",
+            {
+                "fields": (
+                    "remaining_pages",
+                )
+            }
+        )
+    )
     add_users_form = AddMultipleUsersForm
 
     def get_urls(self):

@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{{ PROJECT_TITLE }}!{% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static 'img/print.ico' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/magic.css' %}">
+</head>
+<body>
+{% block content %}
+    <div class="source-code">
+        <table>
+            {% for line in print_contents %}
+                <tr class="source-code pdf">
+                    <td class="line-numbers">{{ forloop.counter }}</td>
+                    <td class="contents">{{ line }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+<!-- /#wrapper -->
+{% include 'includes/js.html' %}
+</body>
+</html>

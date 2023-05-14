@@ -11,6 +11,9 @@
             <button class="btn btn-primary center-block" type="submit">
                 Send to Print
             </button>
+            <small class="help-block text-muted text-center">
+                You can print <strong>{{ user.remaining_pages }}</strong> more pages.
+            </small>
         </form>
     </div>
 {% endblock %}
@@ -19,7 +22,7 @@
     <script type="text/javascript">
         function pasteContent() {
             let fileField = document.getElementById("id_file");
-            let textField = document.getElementById("id_source_code");
+            let textField = document.getElementById("id_content");
             let reader = new FileReader();
             reader.onload = function(e) {
                 textField.value = e.target.result;

@@ -153,3 +153,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Project specific constants
 
 PROJECT_TITLE = "Print Server"
+
+# Keep it true to save the generated PDFs after successful prints.
+KEEP_PDF = False
+# Maximum number of pages an user can request to print.
+MAX_PAGES = 50
