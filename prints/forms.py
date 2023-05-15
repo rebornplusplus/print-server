@@ -13,7 +13,7 @@ class PrintSubmitForm(forms.ModelForm):
 
     class Meta:
         model = Print
-        exclude = ("id", "created_at", "user", "pages")
+        fields = ("content", "file")
         widgets = {
             "content": forms.Textarea(attrs={
                 "class": "form-control source-code",

@@ -1,3 +1,4 @@
+import hashlib
 import os.path
 
 import weasyprint
@@ -26,4 +27,10 @@ def generate_weasyprint_doc(content, template_path, css_path="", top_left_header
         css_obj = weasyprint.CSS(os.path.join("static/", css_path))
     team_name_css = weasyprint.CSS(string="@page { @top-left { content: \"" + top_left_header + "\" } }")
     #
-    return html_obj.render(stylesheets=[css_obj, team_name_css])
+    pdf = html_obj.render(stylesheets=[css_obj, team_name_css])
+    file_name = ""
+    if settings.KEEP_PDF:
+        file_name = hashlib.sha256(content.encode()).hexdigest() + ".pdf"
+        pdf.write_pdf(target=settings.MEDIA_ROOT + "/" + file_name)
+    #
+    return len(pdf.pages), file_name

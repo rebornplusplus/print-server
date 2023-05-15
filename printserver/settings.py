@@ -64,6 +64,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
+                "django.template.context_processors.media",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -139,11 +140,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = ".static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = ".static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+# Media files (User-uploaded files)
+# https://docs.djangoproject.com/en/4.2/howto/static-files/#serving-files-uploaded-by-a-user-during-development
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, ".media")
+if not os.path.exists(MEDIA_ROOT):
+    os.makedirs(MEDIA_ROOT, mode=0o775)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -155,6 +164,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 PROJECT_TITLE = "Print Server"
 
 # Keep it true to save the generated PDFs after successful prints.
-KEEP_PDF = False
+KEEP_PDF = True
 # Maximum number of pages an user can request to print.
 MAX_PAGES = 50
