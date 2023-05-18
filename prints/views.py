@@ -1,15 +1,17 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse
 
 from accounts.models import SiteUser
-from printserver.helpers import generate_weasyprint_doc
+from .helpers import generate_pdf
 from .forms import PrintSubmitForm
-from .models import Print
+from .printer import check_printer_daemon, submit_to_printer
+
+
+if not check_printer_daemon():
+    print("error: printer daemon (e.g. `lpr') not found.")
 
 
 @login_required
@@ -20,24 +22,25 @@ def submit_view(request):
             user = SiteUser.objects.get(id=request.user.id)
             submission = form.save(commit=False)
             submission.user = user
-            pdf_pages, pdf_path = generate_weasyprint_doc(
-                content=submission.content,
-                template_path="prints/print-details.html",
-                css_path="css/magic.css",
-                top_left_header=request.user.first_name
-            )
+            pdf_pages, pdf_path = generate_pdf(submission.content, user)
             if user.can_print(pdf_pages):
                 submission.pages = pdf_pages
-                if settings.KEEP_PDF:
-                    submission.pdf_path = pdf_path
+                submission.pdf_path = pdf_path
                 with transaction.atomic():
                     user.update_pages(submission.pages)
                     submission.save()
                     user.save()
-                messages.success(
-                    request,
-                    "Submitted successfully. Took " + str(submission.pages) + " pages."
-                )
+                if check_printer_daemon():
+                    submit_to_printer(settings.MEDIA_ROOT + "/" + pdf_path)
+                    messages.success(
+                        request,
+                        "Submission sent to printer. Took " + str(submission.pages) + " pages."
+                    )
+                else:
+                    messages.info(
+                        request,
+                        "Submission saved. printer-daemon not available. Took " + str(submission.pages) + " pages."
+                    )
                 return redirect(reverse("home"))
             else:
                 messages.error(

@@ -34,3 +34,12 @@ def generate_weasyprint_doc(content, template_path, css_path="", top_left_header
         pdf.write_pdf(target=settings.MEDIA_ROOT + "/" + file_name)
     #
     return len(pdf.pages), file_name
+
+
+def generate_pdf(content, user):
+    return generate_weasyprint_doc(
+        content=content,
+        template_path="prints/print-details.html",
+        css_path="css/magic.css",
+        top_left_header=user.get_full_name()
+    )
