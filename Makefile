@@ -26,13 +26,13 @@ collectstatic:
 	. $(VENV); python3 manage.py collectstatic
 
 run:
-	. $(VENV); python3 manage.py runserver
+	. $(VENV); python3 manage.py runserver 0.0.0.0:8000
 
 test:
 	. $(VENV); python3 manage.py test --verbosity 2
 
 clean:
-	rm -rf .venv .static *.sqlite*
+	rm -rf .venv .static *.sqlite* .media
 
 all: install migrate collectstatic run test clean
 
