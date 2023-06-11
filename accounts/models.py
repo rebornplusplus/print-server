@@ -5,6 +5,8 @@ from django.db import models
 
 class SiteUser(AbstractUser):
     remaining_pages = models.IntegerField(default=settings.MAX_PAGES)
+    organization = models.CharField(blank=True, null=True, max_length=200)
+    printer = models.CharField(blank=True, null=True, max_length=200)
 
     def can_print(self, page_count):
         return self.remaining_pages >= page_count
@@ -13,3 +15,9 @@ class SiteUser(AbstractUser):
         self.remaining_pages -= pages_printed
         if self.remaining_pages < 0:
             self.remaining_pages = 0
+
+    def get_remaining_pages(self):
+        return self.remaining_pages
+
+    def get_org_name(self):
+        return self.organization

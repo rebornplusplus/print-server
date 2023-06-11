@@ -18,12 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
-from accounts.views import base_view
-
 urlpatterns = [
     # use the default django.contrib.auth login and logout views
     path("login/", auth_views.LoginView.as_view(template_name="login.html", next_page="home"), name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
-
-    path("base/", base_view, name="base"),
 ]

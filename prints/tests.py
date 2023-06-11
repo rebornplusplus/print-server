@@ -10,7 +10,9 @@ class PrintTests(TestCase):
     def setUpTestData(cls):
         cls.username = "print-user"
         cls.password = "print-password"
-        create_user(cls.username, cls.password)
+        user = create_user(cls.username, cls.password)
+        user.organization = "print-org"
+        user.save()
 
     def test_submit(self):
         # login

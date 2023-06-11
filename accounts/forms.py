@@ -10,11 +10,13 @@ class AddMultipleUsersForm(forms.Form):
 
     class DummyUser:
         def __init__(self, record):
-            if len(record) != 3:
+            if len(record) != 5:
                 raise ValidationError("Invalid record: " + ",".join(record))
             self.username = record[0]
             self.password = record[1]
             self.first_name = record[2]
+            self.organization = record[3]
+            self.printer = record[4]
             self.validate()
 
         def validate(self):
@@ -45,7 +47,7 @@ class AddMultipleUsersForm(forms.Form):
                          "-webkit-box-sizing: border-box;"
                          "-moz-box-sizing: border-box;"
                          "box-sizing: border-box;",
-                "placeholder": "username,password,name\n"
+                "placeholder": "<username>,<password>,<name>,<organization>,<printer-name>\n"
                                "...",
             }
         ),
@@ -53,13 +55,15 @@ class AddMultipleUsersForm(forms.Form):
             str(ASCIIUsernameValidator().message),
             MinimumLengthValidator().get_help_text(),
             NumericPasswordValidator().get_help_text(),
+            "organization is optional and may be left empty.",
+            "printer-name is optional and may be left empty. The default printer will be used if empty."
         ]),
     )
 
     def clean_users_details(self):
         data = self.cleaned_data["users_details"]
         # check if the attributes are valid
-        # schema: username, password, first_name
+        # schema: username, password, first_name, organization, printer name
         user_info_list = list(csv.reader(data.split('\n'), delimiter=","))
         for user_info in user_info_list:
             self.DummyUser(user_info)

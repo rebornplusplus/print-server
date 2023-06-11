@@ -12,6 +12,7 @@ def create_user(username, password, is_superuser=False):
     user.is_staff = is_superuser
     user.is_superuser = is_superuser
     user.save()
+    return user
 
 
 class AccountTests(TestCase):
@@ -102,7 +103,7 @@ class AccountTests(TestCase):
         # create user - unsuccessful
         resp = self.client.post(
             reverse("admin:accounts_siteuser_add_users"),
-            {"users_details": "bar,bar,bar"}
+            {"users_details": "bar,bar,bar,bar,"}
         )
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, "Failed to add the users.")
@@ -111,7 +112,7 @@ class AccountTests(TestCase):
         with transaction.atomic():
             resp = self.client.post(
                 reverse("admin:accounts_siteuser_add_users"),
-                {"users_details": "bar,password,bar"}
+                {"users_details": "bar,password,bar,bar,"}
             )
         self.assertEqual(resp.status_code, 302)
         self.assertRedirects(resp, reverse("admin:accounts_siteuser_changelist"))

@@ -17,7 +17,7 @@ def generate_html_for_print(content, template_path):
     return html
 
 
-def generate_weasyprint_doc(content, template_path, css_path="", top_left_header=""):
+def generate_weasyprint_doc(content, template_path, css_path="", top_left_header="", top_center_header=""):
     html = generate_html_for_print(content, template_path)
     html_obj = weasyprint.HTML(string=html)
     #
@@ -26,8 +26,9 @@ def generate_weasyprint_doc(content, template_path, css_path="", top_left_header
     else:
         css_obj = weasyprint.CSS(os.path.join("static/", css_path))
     team_name_css = weasyprint.CSS(string="@page { @top-left { content: \"" + top_left_header + "\" } }")
+    org_name_css = weasyprint.CSS(string="@page { @top-center { content: \"" + top_center_header + "\" } }")
     #
-    pdf = html_obj.render(stylesheets=[css_obj, team_name_css])
+    pdf = html_obj.render(stylesheets=[css_obj, team_name_css, org_name_css])
     file_name = ""
     if settings.KEEP_PDF:
         file_name = hashlib.sha256(content.encode()).hexdigest() + ".pdf"
@@ -41,5 +42,6 @@ def generate_pdf(content, user):
         content=content,
         template_path="prints/print-details.html",
         css_path="css/magic.css",
-        top_left_header=user.get_full_name()
+        top_left_header=user.get_full_name(),
+        top_center_header=user.get_org_name()
     )

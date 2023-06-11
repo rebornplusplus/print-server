@@ -42,6 +42,21 @@
        url('../fonts/ubuntu-mono-v15-latin-regular.svg#UbuntuMono') format('svg'); /* Legacy iOS */
 }
 
+/* ubuntu-regular - latin */
+/* https://gwfh.mranftl.com/fonts/ubuntu?subsets=latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/ubuntu-v20-latin-regular.eot'); /* IE9 Compat Modes */
+  src: url('../fonts/ubuntu-v20-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('../fonts/ubuntu-v20-latin-regular.woff2') format('woff2'), /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+       url('../fonts/ubuntu-v20-latin-regular.woff') format('woff'), /* Chrome 5+, Firefox 3.6+, IE 9+, Safari 5.1+, iOS 5+ */
+       url('../fonts/ubuntu-v20-latin-regular.ttf') format('truetype'), /* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+       url('../fonts/ubuntu-v20-latin-regular.svg#Ubuntu') format('svg'); /* Legacy iOS */
+}
+
 body {
     overflow-x: hidden;
     background: #ffffff;
@@ -1130,13 +1145,17 @@ body.dragging, body.dragging * {
 
 @page {
     size: portrait;
-    margin: 0.5in 0.5in 0.5in 0.5in;
+    margin: 0.8in 0.5in 0.5in 0.5in;
 
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     font-size: small;
 
     @top-left {
         content: "PLACEHOLDER: Team name";
+    }
+
+    @top-center {
+        content: "PLACEHOLDER: Org name"
     }
 
     @top-right {

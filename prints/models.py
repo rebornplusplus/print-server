@@ -9,3 +9,9 @@ class Print(models.Model):
     content = models.TextField()
     pages = models.IntegerField()
     pdf_path = models.CharField(blank=True, null=True, max_length=100)
+
+    def __str__(self) -> str:
+        name = self.user.get_full_name()
+        if name == "":
+            name = self.user.get_username()
+        return f"Print by {name} ({self.created_at.strftime('%b %d, %Y at %H:%M:%S')})"

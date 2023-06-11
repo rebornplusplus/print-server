@@ -14,12 +14,21 @@ class SiteUserAdmin(UserAdmin):
     fieldsets = (
         *UserAdmin.fieldsets,
         (
-            "Print Settings",
+            "Print settings",
             {
                 "fields": (
                     "remaining_pages",
+                    "printer",
                 )
             }
+        ),
+        (
+            "Additional info",
+            {
+                "fields": (
+                    "organization",
+                )
+            },
         )
     )
     add_users_form = AddMultipleUsersForm
@@ -47,7 +56,9 @@ class SiteUserAdmin(UserAdmin):
                         SiteUser.objects.create_user(
                             username=user_info[0],
                             password=user_info[1],
-                            first_name=user_info[2]
+                            first_name=user_info[2],
+                            organization=user_info[3],
+                            printer=user_info[4]
                         )
                     except Exception:
                         failed_users.append(user_info[0])
