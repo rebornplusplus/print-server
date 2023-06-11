@@ -20,4 +20,7 @@ class SiteUser(AbstractUser):
         return self.remaining_pages
 
     def get_org_name(self):
-        return self.organization
+        return self.organization if self.organization else ""
+
+    def get_printer(self):
+        return self.printer if self.printer else ""

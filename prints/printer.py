@@ -1,4 +1,5 @@
 import subprocess
+import shlex
 
 
 DAEMON_AVAILABLE = False
@@ -25,7 +26,7 @@ def submit_to_printer(filename: str, printer=""):
     """
     if not check_printer_daemon():
         return None
-    cmd = "lpr " + filename
-    if printer != "":
-        cmd += "-P " + printer
+    cmd = "lpr " + shlex.quote(filename)
+    if printer and printer != "":
+        cmd += " -P " + shlex.quote(printer)
     return subprocess.Popen(cmd, shell=True)

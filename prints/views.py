@@ -31,7 +31,7 @@ def submit_view(request):
                     submission.save()
                     user.save()
                 if check_printer_daemon():
-                    submit_to_printer(settings.MEDIA_ROOT + "/" + pdf_path)
+                    submit_to_printer(settings.MEDIA_ROOT + "/" + pdf_path, user.get_printer())
                     messages.success(
                         request,
                         "Submission sent to printer. Took " + str(submission.pages) + " pages."
