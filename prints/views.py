@@ -45,7 +45,8 @@ def submit_view(request):
             else:
                 messages.error(
                     request,
-                    "Cannot print the submitted document. You don't have enough pages remaining."
+                    "Cannot print the submitted document. Either you don't have enough pages remaining"
+                    " or this document is longer than " + str(settings.MAX_PAGES_PER_PRINT) + " pages."
                 )
     else:
         form = PrintSubmitForm()
@@ -54,8 +55,3 @@ def submit_view(request):
         "form": form,
     }
     return render(request, "prints/submit.html", context)
-
-
-@login_required
-def submissions_view(request):
-    return render(request, "base.html")

@@ -16,9 +16,8 @@ Including another URLconf
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
-from prints.views import submit_view, submissions_view
+from prints.views import submit_view
 
 urlpatterns = [
     path("submit/", submit_view, name="prints.submit"),
-    path("submissions/", submissions_view, name="prints.submissions"),
 ]

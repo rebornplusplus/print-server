@@ -24,7 +24,11 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true">
-                        {{ user }}
+                        {% if user.get_full_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            {{ user }}
+                        {% endif %}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -32,8 +36,6 @@
                             <li><a href="/admin">Admin Site</a></li>
                             <li role="separator" class="divider"></li>
                         {% endif %}
-                        <li><a href="{% url 'prints.submissions' %}">My Submissions</a></li>
-                        <li role="separator" class="divider"></li>
                         <li><a href="{% url 'logout' %}">Log out</a></li>
                     </ul>
                 </li>

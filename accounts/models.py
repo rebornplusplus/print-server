@@ -9,7 +9,8 @@ class SiteUser(AbstractUser):
     printer = models.CharField(blank=True, null=True, max_length=200)
 
     def can_print(self, page_count):
-        return self.remaining_pages >= page_count
+        return page_count <= settings.MAX_PAGES_PER_PRINT \
+            and self.remaining_pages >= page_count
 
     def update_pages(self, pages_printed):
         self.remaining_pages -= pages_printed
