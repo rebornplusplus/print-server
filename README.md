@@ -1,3 +1,5 @@
+[![Build and Test](https://github.com/rebornplusplus/print-server/actions/workflows/tests.yml/badge.svg)](https://github.com/rebornplusplus/print-server/actions/workflows/tests.yml)
+
 # Print Server
 
 A simple print server for onsite programming contests and similar events.
