@@ -1,9 +1,12 @@
-name: "Build and Test"
+name: "Test"
 
 on:
   push:
   pull_request:
-    branches: [ "master" ]
+  workflow_dispatch:
+  schedule:
+    # Test every two weeks.
+    - cron: '0 0 1,15 * *'
 
 jobs:
   test:
@@ -12,18 +15,16 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"]
-
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        make install
-    - name: Run Tests
-      run: |
-        make test
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run tests
+        run: |
+          make test
 
