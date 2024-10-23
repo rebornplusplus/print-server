@@ -1,16 +1,12 @@
 # Makefile
 
-VENV = .venv/bin/activate
-
-install:
-	@echo "... setting up virtualenv"
-	python3 -m venv .venv
-	. $(VENV); pip install --upgrade pip
-	. $(VENV); pip install --upgrade -r requirements.txt
-
+.PHONY: help
+help:
 	@echo "\n" \
 		"--------------------------------------------------------------- \n" \
+		"* show help:                                 make help          \n" \
 		"* install required packages in virtual env:  make install       \n" \
+		"* install in clean build environment:        make clean-install \n" \
 		"* make and apply migrations:                 make migrate       \n" \
 		"* collect static files:                      make collectstatic \n" \
 		"* watch, build and serve the django server:  make run           \n" \
@@ -18,23 +14,43 @@ install:
 		"* clean full environment:                    make clean         \n" \
 		"--------------------------------------------------------------- \n"
 
-migrate:
-	. $(VENV); python3 manage.py makemigrations accounts prints
-	. $(VENV); python3 manage.py migrate
+VENVDIR = .venv
+VENV = $(VENVDIR)/bin/activate
 
-collectstatic:
-	. $(VENV); python3 manage.py collectstatic
+.PHONY: venv-setup
+venv-setup:
+	@echo "... setting up virtualenv"
+	python3 -m venv $(VENVDIR)
 
-run:
-	. $(VENV); python3 manage.py runserver 0.0.0.0:8000
+.PHONY: venv-activate
+venv-activate:
+	. $(VENV)
 
-test:
-	. $(VENV); python3 manage.py test --verbosity 2
+.PHONY: install
+install: venv-setup venv-activate
+	pip install --upgrade pip
+	pip install --upgrade -r requirements.txt
 
+.PHONY: clean-install
+clean-install: clean install
+
+.PHONY: migrate
+migrate: venv-activate
+	python3 manage.py makemigrations accounts prints
+	python3 manage.py migrate
+
+.PHONY: collectstatic
+collectstatic: venv-activate
+	python3 manage.py collectstatic
+
+.PHONY: run
+run: venv-activate
+	python3 manage.py runserver 0.0.0.0:8000
+
+.PHONY: test
+test: install venv-activate
+	python3 manage.py test --verbosity 2
+
+.PHONY: clean
 clean:
-	rm -rf .venv .static *.sqlite* .media
-
-all: install migrate collectstatic run test clean
-
-.PHONY: all
-
+	rm -rf $(VENVDIR) .static *.sqlite* .media
